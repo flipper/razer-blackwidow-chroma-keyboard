@@ -1,3 +1,4 @@
+#![windows_subsystem = "windows"]
 const VENDOR_ID: u16 = 0x1532;
 const PRODUCT_ID: u16 = 0x0203;
 
