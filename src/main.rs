@@ -29,11 +29,17 @@ fn main() -> Result<(), rusb::Error> {
         None => return Err(rusb::Error::NotFound),
     };
 
+    #[cfg(target_os = "linux")]
+    handle.detach_kernel_driver(INTERFACE as u8)?;
+
     handle.claim_interface(INTERFACE as u8)?;
 
     let length = handle.write_control(REQUEST_TYPE, REQUEST, VALUE, INTERFACE, PAYLOAD, TIMEOUT)?;
 
     handle.release_interface(INTERFACE as u8)?;
+
+    #[cfg(target_os = "linux")]
+    handle.attach_kernel_driver(INTERFACE as u8)?;
 
     println!("Wrote {} bytes", length);
 
